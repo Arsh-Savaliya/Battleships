@@ -62,8 +62,16 @@ class Board:
             r = "Not a valid position."
             return r
     
-    # def validShipPlace(self,coords):
-    #     for x,y in coords:
+    def validShipPlace(self,coords):  #checks if the ship placement is valid or not
+        for x,y in coords:  
+            if not self.is_valid_position(x,y):  #checks if the ship is completely inside board or not
+                print("given coords are out of board")
+                return False
+            if self.grid[x][y] == "@":
+                print("invalid positioning. ship clashes with other ship")
+                return False
+        return True
+
 
 
 
