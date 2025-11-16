@@ -1,4 +1,4 @@
-from board import Board
+from Board import Board
 from ships import ship,fleet
 from gameManager import gameManager
 
