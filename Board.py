@@ -82,13 +82,6 @@ class Board:
 
 
 
-
-
-        
-#gdfshdfidfosjdfo
-
-
-
 # SYMBOLS
 # ~ => water
 # @ => ship

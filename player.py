@@ -1,6 +1,6 @@
 from Board import Board
 from ships import ship,fleet
-from gameManager import gameManager
+# from gameManager import gameManager
 
 class player:  #player class that keeps player data
     def __init__(self,name): # creats player object

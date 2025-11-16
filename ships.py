@@ -7,6 +7,7 @@ class ship:
 
     def place(self,x1,y1,x2,y2):  #takes starting coords and ending coords
         # Calculate expected length based on input coordinates
+        self.coord = []
         length = 0
         if x1 == x2:
             length = abs(y2 - y1) + 1
