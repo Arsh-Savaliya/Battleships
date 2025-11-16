@@ -10,7 +10,8 @@ class Board:
         return [["~" for _ in range(self.size)] for _ in range(self.size)]
     
     def display_board(self):
-        print(self.grid)
+        for i in range(10):
+            print(self.grid[i])
 
     def display_ship(self,x1,y1,x2,y2):
         ## making x1>x2 and y1>y1
@@ -28,12 +29,16 @@ class Board:
         if(y1 == y2):
             for i in range(x1,x2+1):
                 self.grid[i][y1] = "@"
+                self.display_board()
         
         else:
             for i in range(y1,y2+1):
                 self.grid[x1][i] = "@"
+                self.display_board()
+        
 
-        print(self.grid)
+
+        
 
         #----------X---------------X------------X--------X
 
@@ -55,6 +60,7 @@ class Board:
             if(r2 == True):
                 self.grid[x][y] = "!"
                 print(self.grid)
+            
             else:        ########## r2 is false
                 self.grid[x][y] = "M"
                 print(self.grid)
