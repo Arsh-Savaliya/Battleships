@@ -1,3 +1,5 @@
+from ships import ship,fleet    
+
 class Board:
     def __init__(self, size=10):
         self.size = size
@@ -59,6 +61,10 @@ class Board:
         else:           ####### r1 is false
             r = "Not a valid position."
             return r
+    
+    # def validShipPlace(self,coords):
+    #     for x,y in coords:
+
 
 
 
