@@ -1,6 +1,6 @@
 import random
 
-from Board import Board
+from newboard import Board
 from ships import ship,fleet
 from player import player
 
@@ -11,36 +11,36 @@ class gameManager:
         self.currPlayer = self.player1
         self.oppPlayer = self.player2
 
-        print("Now lets us begin game betwee you two")
+        print("Now lets us begin game between you two")
 
-    def get_ship_coords(self,name,size): 
-        # takes coords of ships and validates them
-        while True:
-            start = tuple(map(int,input("Enter starting coords as 1 2 for (1,2): ").split()))  #starting coords
-            print(f"Keep in mind that ship size is {self.size}")
-            ending = tuple(map(int,input("Enter ending coords as 1 5 for (1.5): ").split()))   #ending coords
-            if (start[0]!=ending[0]) ^ (start[1]!=ending[1]):   #checks if ships is either vertical or horizontal and covers more than 1 block
-                 print("Keep in mind that ship can be either vertical or horizontal")
-                 continue
+    # def get_ship_coords(self,size): 
+    #     # takes coords of ships and validates them
+    #     while True:
+    #         start = tuple(map(int,input("Enter starting coords as 1 2 for (1,2): ").split()))  #starting coords
+    #         print(f"Keep in mind that ship size is {self.size}")
+    #         ending = tuple(map(int,input("Enter ending coords as 1 5 for (1.5): ").split()))   #ending coords
+    #         if (start[0]!=ending[0]) ^ (start[1]!=ending[1]):   #checks if ships is either vertical or horizontal and covers more than 1 block
+    #              print("Keep in mind that ship can be either vertical or horizontal")
+    #              continue
                  
-            if (len(start) != 2) or (len(ending) != 2):  #checks if user has given only 2 nums for coords
-                print("Please enter only two numbers")
-                continue
+    #         if (len(start) != 2) or (len(ending) != 2):  #checks if user has given only 2 nums for coords
+    #             print("Please enter only two numbers")
+    #             continue
             
-            if (start[0] == ending[0]):   #checks if the given coords alligns with ship size
-                 if (abs(start[1]-ending[0]) != size):
-                      print(f"Keep in mind that ship is of size {size}")
-                 coords = [(start[0],y) for y in range(start[1],ending[1]+1)]
-            elif (start[1]== ending[1]):
-                 coords = [(x,start[1]) for x in range(start[0],ending[0]+1)]
-            if not Board.validShipPlace(self.name,coords):
-                 continue
-        return coords
+    #         if (start[0] == ending[0]):   #checks if the given coords alligns with ship size
+    #              if (abs(start[1]-ending[0]) != size):
+    #                   print(f"Keep in mind that ship is of size {size}")
+    #              coords = [(start[0],y) for y in range(start[1],ending[1]+1)]
+    #         elif (start[1]== ending[1]):
+    #              coords = [(x,start[1]) for x in range(start[0],ending[0]+1)]
+    #         if not Board.validShipPlace(self.name,coords):
+    #              continue
+    #     return coords
     
-    def place_ships_randomly(self):  #random ship placement mechanism
-        print(f"\nPlacing ships randomly for {self.name}...")
+    def place_ships_randomly(self,player):  #random ship placement mechanism
+        print(f"\nPlacing ships randomly for {self.currPlayer.name}...")
 
-        for s in self.ships:
+        for s in self.currPlayer.ships:
             size = s.size
 
             placed = False
@@ -49,27 +49,27 @@ class gameManager:
                 orientation = random.choice(["H", "V"])
 
                 if orientation == "H":
-                    x = random.randint(0, self.Board.size - 1)
-                    y = random.randint(0, self.Board.size - size)
+                    x = random.randint(0, self.currPlayer.Board.size - 1)
+                    y = random.randint(0, self.currPlayer.Board.size - size)
                     coords = [(x, y + i) for i in range(size)]
                 else:
-                    x = random.randint(0, self.Board.size - size)
-                    y = random.randint(0, self.Board.size - 1)
+                    x = random.randint(0, self.currPlayer.Board.size - size)
+                    y = random.randint(0, self.currPlayer.Board.size - 1)
                     coords = [(x + i, y) for i in range(size)]
 
                 # check board validity
-                if not self.Board.validShipPlace(coords):
+                if not self.currPlayer.Board.validShipPlace(coords):
                     continue
 
                 # place on board
                 for (a, b) in coords:
-                    self.Board.grid[a][b] = "@"
+                    self.currPlayer.Board.grid[a][b] = "@"
 
                 s.coord = coords
                 placed = True
 
-        print(f"Ships placed for {self.name}.")  
-        self.Board.display_board()
+        print(f"Ships placed for {self.currPlayer.name}.")  
+        self.currPlayer.Board.display_board()
 
     def swap(self):
         self.currPlayer,self.oppPlayer = self.oppPlayer,self.currPlayer
@@ -80,13 +80,13 @@ class gameManager:
     def check_attack(self,r,c):
         HitShip = False #flag of hitting a ship
         for i in self.oppPlayer.ships:
-            if i.is_hit():
+            if i.is_hit(r,c):
                 i.Hit()
-                flag = True
                 print(f"YAY!! that was a hit")
 
                 if i.sunkShip():
                     print("CRAZY you sunk a ship")
+                HitShip = True
                 break
         if not HitShip:
             print("OOH!! that was a miss")
@@ -98,15 +98,32 @@ class gameManager:
         return all_sunk
     
     def play_game(self):
+        choice = input("Choose M to manualy place ships and R to randomly").upper()
+        if choice == "M":
+             print("\nManual placement chosen for BOTH players.\n")
+             self.player1.place_ships()
+             self.player2.place_ships()
+
+        if choice == "R":
+            print("Random placement chosen for both players")
+            self.place_ships_randomly(self.currPlayer)
+            self.swap()
+            self.place_ships_randomly(self.currPlayer)
+
+
+    
+
         while True:
-            print(f"its {self.currPlayer}'s turn to attack")
+            print(f"its {self.currPlayer.name}'s turn to attack")
             print()
-            print(f"{self.oppPlayer}'s board. (~ Water, M miss, ! partialy sunked ship, X completly sunken ship)")
-            self.oppPlayer.Board.display_board
+            print(f"{self.oppPlayer.name}'s board. (~ Water, M miss, ! partialy sunked ship, X completly sunken ship)")
+            self.oppPlayer.Board.display_board()
             attack_r, attack_c = self.currPlayer.attack()
-            self.check_attack(attack_r,attack_c)
+            hit = self.check_attack(attack_r,attack_c)
+            self.oppPlayer.Board.display_hit_miss(attack_r,attack_c)
 
             if self.Victory_logic():
-                print(f"{self.currPlayer} wins")
+                print(f"{self.currPlayer.name} wins")
                 break
-            self.swap()
+            if not hit:
+                 self.swap()
