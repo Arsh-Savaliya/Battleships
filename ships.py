@@ -5,25 +5,31 @@ class ship:
         self.coord = []
         self.hits = 0
 
-    def place(self,x1,y1,x2,y2):  #takes starting coords and ending coords
+    def place(self,coords):  #takes starting coords and ending coords
         # Calculate expected length based on input coordinates
-        self.coord = []
-        length = 0
-        if x1 == x2:
-            length = abs(y2 - y1) + 1
-        elif y1 == y2:
-            length = abs(x2 - x1) + 1
+        # x1,y1 = coords[0][0],coords[0][1]
+        # x2,y2 = coords[1][0],coords[1][1]
+        # self.coord = []
+        # length = 0
+        # if x1 == x2:
+        #     length = abs(y2 - y1) + 1
+        # elif y1 == y2:
+        #     length = abs(x2 - x1) + 1
             
-        if length != self.size:
-            print(f"Error: Ship {self.name} (size {self.size}) must span exactly {self.size} squares.")
-            return # Exit if invalid size
+        # if length != self.size:
+        #     print(f"Error: Ship {self.name} (size {self.size}) must span exactly {self.size} squares.")
+        #     return # Exit if invalid size
         
-        if x1==x2:
-            for i in range(min(y1,y2), max(y1,y2)+1):
-                self.coord.append((x1,i))
-        if y1==y2:
-            for i in range(min(x1,x2), max(x1,x2)+1):
-                self.coord.append((i,y1))
+        # if x1==x2:
+        #     for i in range(min(y1,y2), max(y1,y2)+1):
+        #         self.coord.append((x1,i))
+        # if y1==y2:
+        #     for i in range(min(x1,x2), max(x1,x2)+1):
+        #         self.coord.append((i,y1))
+        if len(coords) != self.size:
+            print(f"Error: Ship {self.name} must be size {self.size}, but got {len(coords)} cells.")
+            return 
+        self.coord = coords
  
     def is_hit(self,row,col): #checks if the coords given are of ship or not
         if (row,col) in self.coord:

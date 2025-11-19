@@ -1,4 +1,6 @@
 import random
+import os
+import time
 
 from newboard import Board
 from ships import ship,fleet
@@ -114,10 +116,11 @@ class gameManager:
     
 
         while True:
+            self.clear_scrn()
             print(f"its {self.currPlayer.name}'s turn to attack")
             print()
             print(f"{self.oppPlayer.name}'s board. (~ Water, M miss, ! partialy sunked ship, X completly sunken ship)")
-            self.oppPlayer.Board.display_board()
+            self.oppPlayer.Board.attack_board()
             attack_r, attack_c = self.currPlayer.attack()
             hit = self.check_attack(attack_r,attack_c)
             self.oppPlayer.Board.display_hit_miss(attack_r,attack_c)
@@ -127,3 +130,6 @@ class gameManager:
                 break
             if not hit:
                  self.swap()
+
+    def clear_scrn(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
