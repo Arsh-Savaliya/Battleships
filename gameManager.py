@@ -1,6 +1,7 @@
 import random
 import os
 import time
+from colorama import Fore,init,Back,Style
 
 from newboard import Board
 from ships import ship,fleet
@@ -65,7 +66,7 @@ class gameManager:
 
                 # place on board
                 for (a, b) in coords:
-                    self.currPlayer.Board.grid[a][b] = "@"
+                    self.currPlayer.Board.grid[a][b] = Fore.BLUE + "@ " + Style.RESET_ALL
 
                 s.coord = coords
                 placed = True
@@ -80,18 +81,36 @@ class gameManager:
         r,c = self.currPlayer.get_ship_coords()
 
     def check_attack(self,r,c):
+        current = self.oppPlayer.Board.grid[r][c]
+
+    # If spot already attacked, don't count it
+        if current in (
+            Fore.RED + "! " + Style.RESET_ALL,   # already hit
+            Fore.GREEN + "M " + Style.RESET_ALL, # already miss
+            Fore.YELLOW + "S " + Style.RESET_ALL # already sunk
+        ):
+            print(Fore.YELLOW + "You already attacked here!" + Style.RESET_ALL)
+            n = input("Press Enter to hit again")
+            return True
         HitShip = False #flag of hitting a ship
         for i in self.oppPlayer.ships:
             if i.is_hit(r,c):
+                if current in (Fore.RED + "! " + Style.RESET_ALL, Fore.YELLOW + "S " + Style.RESET_ALL):
+                     # Already hit before — do nothing further
+                    return None
                 i.Hit()
-                print(f"YAY!! that was a hit")
+                print(Fore.RED + "YAY!! that was a hit" + Style.RESET_ALL)
+                # n = input("Press Enter to Hit again")
 
                 if i.sunkShip():
-                    print("CRAZY you sunk a ship")
+                    print(Fore.YELLOW + "CRAZY you sunk a ship!")
+                    self.oppPlayer.Board.sunkShip(i.coord)
+                    # n = input("Press Enter to Hit again")
                 HitShip = True
                 break
         if not HitShip:
             print("OOH!! that was a miss")
+            # n = input("Press Enter to giv turn to opponent")
         
         return HitShip
     
@@ -100,34 +119,41 @@ class gameManager:
         return all_sunk
     
     def play_game(self):
-        choice = input("Choose M to manualy place ships and R to randomly").upper()
+        choice = input("Choose M to manualy place ships and R to randomly: ").upper()
         if choice == "M":
              print("\nManual placement chosen for BOTH players.\n")
+             time.sleep(1)
              self.player1.place_ships()
              self.player2.place_ships()
 
         if choice == "R":
             print("Random placement chosen for both players")
             self.place_ships_randomly(self.currPlayer)
+            go_ahead = input("Press Enter to continue")
+            self.clear_scrn()
             self.swap()
             self.place_ships_randomly(self.currPlayer)
-
-
-    
+            go_ahead = input("Press Enter to continue")
 
         while True:
             self.clear_scrn()
+            
             print(f"its {self.currPlayer.name}'s turn to attack")
             print()
-            print(f"{self.oppPlayer.name}'s board. (~ Water, M miss, ! partialy sunked ship, X completly sunken ship)")
+            self.currPlayer.Board.attack_board()
+            print("Current State of your board is this \u2191")
+            print()
+
             self.oppPlayer.Board.attack_board()
+            print(f"{self.oppPlayer.name}'s board \u2191." + " (~ Water, M miss, ! partialy sunked ship, X completly sunken ship)")
+            print()
+            
             attack_r, attack_c = self.currPlayer.attack()
             hit = self.check_attack(attack_r,attack_c)
             self.oppPlayer.Board.display_hit_miss(attack_r,attack_c)
 
             if self.Victory_logic():
-                print(f"{self.currPlayer.name} wins")
-                break
+                print(f"Congratulations, {self.currPlayer.name} wins ")
             if not hit:
                  self.swap()
 

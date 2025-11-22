@@ -1,4 +1,5 @@
-from ships import ship, fleet    
+from ships import ship, fleet   
+from colorama import init,Fore,Style,Back 
 
 class Board:
     def __init__(self, size=10):
@@ -12,7 +13,7 @@ class Board:
     
     #displays the current state of
     def display_board(self):
-        # header
+        # header 
         header = "   " + " ".join(f"{c:2}" for c in range(self.size))
         print(header)
         for r in range(self.size):
@@ -21,17 +22,23 @@ class Board:
         print()
     
     def attack_board(self):
-        print("   " + " ".join(f"{c:2}" for c in range(self.size)))
+        header = "   " + " ".join(f"{c:2}" for c in range(self.size))
+        print(header)
         for r in range(self.size):
             rowDis = []
             for c in range(self.size):
                 block = self.grid[r][c]
-                if block == "@":
+
+                # If it's a ship symbol, hide it as water
+                if block in ("@", Fore.BLUE + "@ " + Style.RESET_ALL):
                     rowDis.append("~ ")
                 else:
-                    rowDis.append(f"{block} ")
-            print(f"{r:2} " + "".join(rowDis))
+                    # Ensure 2-char alignment
+                    rowDis.append(f"{block:2}")
+
+            print(f"{r:2} " + " ".join(rowDis))
         print()
+
     #         row_str = " ".join(f"{self.attackGrid[r][c]:2}" for c in range(self.size))
     #         print(f"{r:2} {row_str}")
     #     print()
@@ -53,7 +60,7 @@ class Board:
         #         self.grid[x1][i] = "@"
 
         for x,y in coords:
-            self.grid[x][y]="@"
+            self.grid[x][y]= Fore.BLUE+"@ "+Style.RESET_ALL
 
         self.display_board()
 
@@ -63,25 +70,52 @@ class Board:
     def check_target(self, x, y):
         if not self.is_valid_position(x, y):
             return False
-        return self.grid[x][y] == "@"
+        return self.grid[x][y] in ("@", Fore.BLUE+"@ "+Style.RESET_ALL)
 
     def display_hit_miss(self, x, y):
         if not self.is_valid_position(x, y):
-            return "Not a valid position."
+            print(Fore.RED + "! Not a valid position. !" + Style.RESET_ALL)
+            return False  # invalid move
 
-        if self.check_target(x, y):
-            self.grid[x][y] = "!"
-        else:
-            self.grid[x][y] = "M"
+        current = self.grid[x][y]
 
+        # Cells that have already been attacked or sunk
+        already_marks = (
+            Fore.RED + "! " + Style.RESET_ALL,    # hit
+            Fore.GREEN + "M " + Style.RESET_ALL,  # miss
+            Fore.YELLOW + "S " + Style.RESET_ALL  # sunk ship
+        )
+
+        # If this spot was already processed before, don't change it
+        if current in already_marks:
+            print(Fore.YELLOW + "You already attacked this spot!" + Style.RESET_ALL)
+            self.display_board()
+            return None  # special: no change
+
+        # Fresh hit on a ship
+        if current in ("@", Fore.BLUE + "@ " + Style.RESET_ALL):
+            self.grid[x][y] = Fore.RED + "! " + Style.RESET_ALL
+            self.display_board()
+            return True   # hit
+
+        # Otherwise, it's water -> miss
+        self.grid[x][y] = Fore.GREEN + "M " + Style.RESET_ALL
         self.display_board()
+        return False      # miss
+
+
+
+    def sunkShip(self,coords):
+        for x, y in coords:
+            self.grid[x][y] = Fore.YELLOW + "S " + Style.RESET_ALL
 
     def validShipPlace(self, coords):  # checks if the ship placement is valid or not
         for x, y in coords:
             if not self.is_valid_position(x, y):  # checks inside board
                 print("given coords are out of board")
                 return False
-            if self.grid[x][y] == "@":
+            
+            if self.grid[x][y] in ("@", Fore.BLUE + "@ " + Style.RESET_ALL):
                 print("invalid positioning. ship clashes with other ship")
                 return False
         return True

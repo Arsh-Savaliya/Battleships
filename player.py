@@ -1,10 +1,11 @@
 from newboard import Board
 from ships import ship,fleet
+import os
 # from gameManager import gameManager
 
 class player:  #player class that keeps player data
     def __init__(self,name): # creats player object
-        self.name = name
+        self.name = name 
         self.Board = Board()
         self.ships = fleet()      
 
@@ -13,14 +14,19 @@ class player:  #player class that keeps player data
         while True:
             try:
                start = tuple(map(int,input("Enter starting coords as 1 2 for (1,2): ").split()))  #starting coords
-               print(f"Keep in mind that ship size is {size}")
-               ending = tuple(map(int,input("Enter ending coords as 1 5 for (1,5): ").split()))   #ending coords
+               if (len(start) != 2):  #checks if user has given only 2 nums for coords
+                print("Please enter only two numbers")
+                continue
+            
+               while(True):
+                    print(f"Keep in mind that ship size is {size}")
+                    ending = tuple(map(int,input("Enter ending coords as 1 5 for (1,5): ").split()))   #ending coords
+                    if (len(ending) != 2):  #checks if user has given only 2 nums for coords
+                         print("Please enter only two numbers")
+                         continue
+                    break
             except:
                  print("Enter 2 inegers spaced by one blank")
-                 continue
-            
-            if not ((start[0] == ending[0] or start[1] == ending[1]) and (start != ending)):   #checks if ships is either vertical or horizontal and covers more than 1 block
-                 print("Keep in mind that ship can be either vertical or horizontal")
                  continue
                  
             if (len(start) != 2) or (len(ending) != 2):  #checks if user has given only 2 nums for coords
@@ -30,9 +36,14 @@ class player:  #player class that keeps player data
             if start[0] == ending[0]:   #checks if the given coords alligns with ship size
                  if (abs(start[1]-ending[1])+1 != size):
                       print(f"Keep in mind that ship is of size {size}")
+                      continue
                  coords = [(start[0],y) for y in range(min(start[1],ending[1]),max(start[1],ending[1]) +1)]
             elif (start[1]== ending[1]):
-                 coords = [(x,start[1]) for x in range(start[0],ending[0]+1)]
+               if (abs(start[0]-ending[0])+1 != size):
+                    print(f"Keep in mind the size {size} of ship")
+                    continue
+               coords = [(x,start[1]) for x in range(min(start[0],ending[0]),max(start[0],ending[0])+1)]
+               
             if not self.Board.validShipPlace(coords):
                  continue
             return coords    
@@ -54,6 +65,9 @@ class player:  #player class that keeps player data
                  print()
             print("your final board is: ")
             self.Board.display_board()
+            n = input("Press Enter to Continue")
+            os.system('cls' if os.name == 'nt' else 'clear')
+
 
     def attack(self): #takes attack coords and attacks
          while True:
@@ -71,4 +85,4 @@ class player:  #player class that keeps player data
      #          if not self.Board.is_valid_position(attack_r,attack_c):
      #               print("Coords must be betwwn 0 and 9")
      #               continue
-               return attack_r,attack_c
+               return attack_r,attack_c 

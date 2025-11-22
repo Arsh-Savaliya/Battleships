@@ -7,7 +7,7 @@ class ship:
 
     def place(self,coords):  #takes starting coords and ending coords
         # Calculate expected length based on input coordinates
-        # x1,y1 = coords[0][0],coords[0][1]
+        # x1,y1 = coords[0][0],coords[0][1] 
         # x2,y2 = coords[1][0],coords[1][1]
         # self.coord = []
         # length = 0
@@ -47,9 +47,10 @@ class ship:
         return self.hits>=self.size
 
 def fleet():  # creats the fleet of 4 ships of different size for a player
-    ship1 = ship("A",4)
-    ship2 = ship("B",3)
-    ship3 = ship("C",3)
-    ship4 = ship("D",2)
-    armada = [ship1,ship2,ship3,ship4]
+    ship1 = ship("Aircraft Carrier",5)
+    ship2 = ship("battleship",4)
+    ship3 = ship("Submarine",3)
+    ship4 = ship("Cruiser",3)
+    ship5 = ship("Destroyer",2)
+    armada = [ship1,ship2,ship3,ship4,ship5]
     return armada
