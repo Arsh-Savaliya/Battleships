@@ -85,4 +85,4 @@ class player:  #player class that keeps player data
      #          if not self.Board.is_valid_position(attack_r,attack_c):
      #               print("Coords must be betwwn 0 and 9")
      #               continue
-               return attack_r,attack_c 
+               return attack_r,attack_c

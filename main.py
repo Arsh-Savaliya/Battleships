@@ -33,8 +33,8 @@ def main():
     print(Fore.MAGENTA)
     print("1. New Game")
     print("2. Load Game")
-    print("3. Exit")
-    print("4. Rules")
+    print("3. Rules")
+    print("4. Exit")
     print(Style.RESET_ALL)
     print("------------------------------------------------------------------------------------------------------------------------------------------------")
     
@@ -54,14 +54,27 @@ def main():
 
             break
 
-        elif n=="2":
+        elif n == "2":
+            os.system('cls' if os.name == 'nt' else 'clear')
+            gm = gameManager(loading=True)
+
+            from fileManager import load_game
+
+            if load_game(gm):
+                gm.play_game()
+            else:
+                print("Starting a NEW game instead.")
+                gm = gameManager()
+                gm.play_game()
+
             break
 
-        elif n=="3":
-            break
-
-        elif n == "4":
+        elif n == "3":
             rules()
+
+        elif n=="4":
+            break
+       
         
         else:
             print(Fore.RED + "INVALID INPUT " + Style.RESET_ALL + "please give a valid input")

@@ -79,7 +79,7 @@ class Board:
 
         current = self.grid[x][y]
 
-        # Cells that have already been attacked or sunk
+        # Cells that have already been attacked or sunK
         already_marks = (
             Fore.RED + "! " + Style.RESET_ALL,    # hit
             Fore.GREEN + "M " + Style.RESET_ALL,  # miss

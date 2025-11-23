@@ -53,4 +53,4 @@ def fleet():  # creats the fleet of 4 ships of different size for a player
     ship4 = ship("Cruiser",3)
     ship5 = ship("Destroyer",2)
     armada = [ship1,ship2,ship3,ship4,ship5]
-    return armada
+    return armada 

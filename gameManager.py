@@ -6,11 +6,19 @@ from colorama import Fore,init,Back,Style
 from newboard import Board
 from ships import ship,fleet
 from player import player
+from fileManager import save_game
 
 class gameManager:
-    def __init__(self):  # makes two player objects (handles extra spaces)
-        self.player1 = player(input("Enter name of PLayer 1: ").strip())
-        self.player2 = player(input("Enter name of player 2: ").strip())
+    def __init__(self,loading = False):  # makes two player objects (handles extra spaces)
+        self.loading = loading
+
+        if not loading: #if new game this happens
+            self.player1 = player(input("Enter name of Player 1: ").strip())
+            self.player2 = player(input("Enter name of player 2: ").strip())
+        else: # if loading old game this happens
+            self.player1 = player("P1")
+            self.player2 = player("P2")
+
         self.currPlayer = self.player1
         self.oppPlayer = self.player2
 
@@ -119,24 +127,32 @@ class gameManager:
         return all_sunk
     
     def play_game(self):
-        choice = input("Choose M to manualy place ships and R to randomly: ").upper()
-        if choice == "M":
-             print("\nManual placement chosen for BOTH players.\n")
-             time.sleep(1)
-             self.player1.place_ships()
-             self.player2.place_ships()
+        if not self.loading:
+            choice = input("Choose M to manualy place ships and R to randomly: ").upper()
+            if choice == "M":
+                print("\nManual placement chosen for BOTH players.\n")
+                time.sleep(1)
+                self.player1.place_ships()
+                self.player2.place_ships()
 
-        if choice == "R":
-            print("Random placement chosen for both players")
-            self.place_ships_randomly(self.currPlayer)
-            go_ahead = input("Press Enter to continue")
-            self.clear_scrn()
-            self.swap()
-            self.place_ships_randomly(self.currPlayer)
-            go_ahead = input("Press Enter to continue")
+            if choice == "R":
+                print("Random placement chosen for both players")
+                self.place_ships_randomly(self.currPlayer)
+                go_ahead = input("Press Enter to continue")
+                self.clear_scrn()
+                self.swap()
+                self.place_ships_randomly(self.currPlayer)
+                go_ahead = input("Press Enter to continue")
 
         while True:
             self.clear_scrn()
+
+            print("\nPress S to save and exit, or Enter to continue attack")
+            choice = input(">>> ").upper()
+            if choice == "S":
+                save_game(self)
+                print("Goodbye!")
+                break
             
             print(f"its {self.currPlayer.name}'s turn to attack")
             print()
@@ -145,7 +161,7 @@ class gameManager:
             print()
 
             self.oppPlayer.Board.attack_board()
-            print(f"{self.oppPlayer.name}'s board \u2191." + " (~ Water, M miss, ! partialy sunked ship, X completly sunken ship)")
+            print(f"{self.oppPlayer.name}'s board \u2191." + " (~ Water, M miss, ! partialy sunked ship, S completly sunken ship)")
             print()
             
             attack_r, attack_c = self.currPlayer.attack()
@@ -159,3 +175,4 @@ class gameManager:
 
     def clear_scrn(self):
         os.system('cls' if os.name == 'nt' else 'clear')
+        
