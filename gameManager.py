@@ -128,22 +128,27 @@ class gameManager:
     
     def play_game(self):
         if not self.loading:
-            choice = input("Choose M to manualy place ships and R to randomly: ").upper()
-            if choice == "M":
-                print("\nManual placement chosen for BOTH players.\n")
-                time.sleep(1)
-                self.player1.place_ships()
-                self.player2.place_ships()
+            # Player 1 chooses
+            choice1 = input(f"{self.player1.name}: Choose M for manual or R for random placement: ").upper()
+            if choice1 == "M":
+                self.currPlayer.place_ships() # P1 manual
+            else:
+                self.place_ships_randomly(self.currPlayer) # P1 random
+                input("Press Enter to continue...")
 
-            if choice == "R":
-                print("Random placement chosen for both players")
-                self.place_ships_randomly(self.currPlayer)
-                go_ahead = input("Press Enter to continue")
-                self.clear_scrn()
-                self.swap()
-                self.place_ships_randomly(self.currPlayer)
-                go_ahead = input("Press Enter to continue")
+            # Switch to Player 2
+            self.swap()
 
+            # Player 2 chooses
+            choice2 = input(f"{self.player2.name}: Choose M for manual or R for random placement: ").upper()
+            if choice2 == "M":
+                self.currPlayer.place_ships() # P2 manual
+            else:
+                self.place_ships_randomly(self.currPlayer) # P2 random
+                input("Press Enter to continue...")
+
+            # Switch back to Player 1 to start game
+            self.swap()
         while True:
             self.clear_scrn()
 

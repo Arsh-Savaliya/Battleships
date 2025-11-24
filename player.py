@@ -64,7 +64,7 @@ class player:  #player class that keeps player data
                     flag = True
                  print()
             print("your final board is: ")
-            self.Board.display_board()
+          #   self.Board.display_board()
             n = input("Press Enter to Continue")
             os.system('cls' if os.name == 'nt' else 'clear')
 
