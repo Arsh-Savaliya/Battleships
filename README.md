@@ -30,10 +30,10 @@ Battleships/
 
 ## ▶️ How to Run the Game
 
-1. **Install Python 3.x**
-2. **Install Colorama library**
-3. **Open a terminal inside the project folder**
-4. **Run:** `python3 main.py`
+1. **Install Python 3**
+3. **Install Colorama library**
+4. **Open a terminal inside the project folder**
+5. **Run:** `python3 main.py`
 
 The game will then:
 - Ask for player names
