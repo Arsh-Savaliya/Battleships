@@ -1,7 +1,6 @@
 from newboard import Board
 from ships import ship,fleet
 import os
-# from gameManager import gameManager
 
 class player:  #player class that keeps player data
     def __init__(self,name): # creats player object
@@ -38,6 +37,7 @@ class player:  #player class that keeps player data
                       print(f"Keep in mind that ship is of size {size}")
                       continue
                  coords = [(start[0],y) for y in range(min(start[1],ending[1]),max(start[1],ending[1]) +1)]
+
             elif (start[1]== ending[1]):
                if (abs(start[0]-ending[0])+1 != size):
                     print(f"Keep in mind the size {size} of ship")
@@ -55,7 +55,7 @@ class player:  #player class that keeps player data
             for s in self.ships:
                  flag = False
                  while not flag:
-                    self.Board.display_board()
+                    # self.Board.display_board()
                     print(f"place ship {s.name} of size {s.size}")
 
                     coords = self.get_ship_coords(s.size)
@@ -64,7 +64,7 @@ class player:  #player class that keeps player data
                     flag = True
                  print()
             print("your final board is: ")
-          #   self.Board.display_board()
+            self.Board.display_board()
             n = input("Press Enter to Continue")
             os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -78,11 +78,4 @@ class player:  #player class that keeps player data
                     print("Example : you wanna attack (1,2) type 1 2")
                     continue
                    
-     #          attack_r,attack_c = map(int,input("Enter only 2 coords separated by space to attack (row,col)").split())
-
-     #      #     if not (isinstance(attack_c,int) or isinstance(attack_r,int)):
-     #      #          continue
-     #          if not self.Board.is_valid_position(attack_r,attack_c):
-     #               print("Coords must be betwwn 0 and 9")
-     #               continue
                return attack_r,attack_c

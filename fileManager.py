@@ -14,7 +14,7 @@ def clean_cell(cell): #converts coloured symbols back normal
     return "~"
 
 def save_game(gm):  #this function helps save game
-    try:
+    try: 
         with open(SAVE_FILE, "w") as f:
             # Save whose turn
             f.write(gm.currPlayer.name + "\n")

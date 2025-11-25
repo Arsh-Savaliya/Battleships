@@ -5,7 +5,6 @@ class Board:
     def __init__(self, size=10):
         self.size = size
         self.grid = self.create_empty_board()
-        # self.attackGrid = self.create_empty_board()
 
     ## Creating empty boards
     def create_empty_board(self):
@@ -39,25 +38,8 @@ class Board:
             print(f"{r:2} " + " ".join(rowDis))
         print()
 
-    #         row_str = " ".join(f"{self.attackGrid[r][c]:2}" for c in range(self.size))
-    #         print(f"{r:2} {row_str}")
-    #     print()
-
 
     def display_ship(self,coords):
-        # # changing coordinates so x1<=x2 and y1<=y2
-        # if x2 < x1:
-        #     x1, x2 = x2, x1
-        # if y2 < y1:
-        #     y1, y2 = y2, y1
-
-        # # checking (horizontal or vertical)
-        # if y1 == y2:
-        #     for i in range(x1, x2+1):
-        #         self.grid[i][y1] = "@"
-        # else:
-        #     for i in range(y1, y2+1):
-        #         self.grid[x1][i] = "@"
 
         for x,y in coords:
             self.grid[x][y]= Fore.BLUE+"@ "+Style.RESET_ALL

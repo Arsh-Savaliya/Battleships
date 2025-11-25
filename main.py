@@ -27,7 +27,7 @@ def main():
    
    
    
-    print(Fore.RED + WelcomHeading +Style.RESET_ALL)
+    print(Fore.RED + WelcomHeading +Style.RESET_ALL) 
 
     print(Fore.RED + "------------------------------------------------------------------------------------------------------------------------------------------------" + Style.RESET_ALL)
     print(Fore.MAGENTA)

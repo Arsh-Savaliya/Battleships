@@ -23,30 +23,6 @@ class gameManager:
         self.oppPlayer = self.player2
 
         print("Now lets us begin game between you two")
-
-    # def get_ship_coords(self,size): 
-    #     # takes coords of ships and validates them
-    #     while True:
-    #         start = tuple(map(int,input("Enter starting coords as 1 2 for (1,2): ").split()))  #starting coords
-    #         print(f"Keep in mind that ship size is {self.size}")
-    #         ending = tuple(map(int,input("Enter ending coords as 1 5 for (1.5): ").split()))   #ending coords
-    #         if (start[0]!=ending[0]) ^ (start[1]!=ending[1]):   #checks if ships is either vertical or horizontal and covers more than 1 block
-    #              print("Keep in mind that ship can be either vertical or horizontal")
-    #              continue
-                 
-    #         if (len(start) != 2) or (len(ending) != 2):  #checks if user has given only 2 nums for coords
-    #             print("Please enter only two numbers")
-    #             continue
-            
-    #         if (start[0] == ending[0]):   #checks if the given coords alligns with ship size
-    #              if (abs(start[1]-ending[0]) != size):
-    #                   print(f"Keep in mind that ship is of size {size}")
-    #              coords = [(start[0],y) for y in range(start[1],ending[1]+1)]
-    #         elif (start[1]== ending[1]):
-    #              coords = [(x,start[1]) for x in range(start[0],ending[0]+1)]
-    #         if not Board.validShipPlace(self.name,coords):
-    #              continue
-    #     return coords
     
     def place_ships_randomly(self,player):  #random ship placement mechanism
         print(f"\nPlacing ships randomly for {self.currPlayer.name}...")
