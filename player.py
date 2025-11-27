@@ -43,6 +43,11 @@ class player:  #player class that keeps player data
                     print(f"Keep in mind the size {size} of ship")
                     continue
                coords = [(x,start[1]) for x in range(min(start[0],ending[0]),max(start[0],ending[0])+1)]
+
+            else:
+                    print("only vertical and horizontal placement allowed")
+                    n = input("press enter")
+                    continue
                
             if not self.Board.validShipPlace(coords):
                  continue
